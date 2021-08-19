@@ -1,0 +1,124 @@
+ALTER PROC [dbo].[uspInsertFacultyDetails](
+@Name VARCHAR(50),@email VARCHAR(50),@psno INT)
+AS
+BEGIN
+BEGIN TRY
+IF ( NOT EXISTS(SELECT PSNo FROM Faculty WHERE PSNo = @psno)) AND (NOT EXISTS(SELECT EmailID FROM Faculty WHERE EmailID = @email))
+	AND ( @Name IS NOT NULL) 
+    BEGIN 
+          INSERT INTO Faculty VALUES(@Name,@email,@psno)
+		  RETURN 1
+		  
+    END 
+ELSE IF ( EXISTS(SELECT @psno FROM Faculty WHERE PSNo = @psno))
+    BEGIN
+		return -1
+	END
+ELSE IF (EXISTS(SELECT @email FROM Faculty WHERE EmailID = @email))
+	BEGIN
+        RETURN -2 
+	END
+ELSE IF ( @Name IS NULL ) 
+    BEGIN 
+        return -3 
+    END 
+END TRY
+BEGIN CATCH
+RETURN -99
+END CATCH
+END
+
+
+
+ALTER PROCEDURE [dbo].[uspInsertBatch]
+@BatchID VARCHAR(50), @BatchName VARCHAR(50), @BatchStrength INT
+AS
+BEGIN
+BEGIN TRY
+IF ( NOT EXISTS(SELECT BatchID FROM Batch WHERE BatchID = @BatchID)) AND (NOT EXISTS(SELECT BatchName FROM Batch WHERE BatchName = @BatchName))
+	AND ( @BatchStrength IS NOT NULL) 
+    BEGIN 
+          INSERT INTO Batch VALUES(@BatchID,@BatchName,@BatchStrength)
+		  RETURN 1
+		  
+    END 
+ELSE IF ( EXISTS(SELECT @BatchID FROM Batch WHERE BatchID = @BatchID))
+    BEGIN
+		return -1
+	END
+ELSE IF (EXISTS(SELECT @BatchName FROM Batch WHERE BatchName = @BatchName))
+	BEGIN
+        RETURN -2 
+	END
+ELSE IF ( @BatchStrength IS NULL ) 
+    BEGIN 
+        return -3 
+    END 
+END TRY
+BEGIN CATCH
+RETURN -99
+END CATCH
+END
+
+
+
+ALTER PROC [dbo].[uspInsertModelDetails]
+@Mid int,@Mname varchar(50),@Mowner varchar(50),@Mdate date
+AS
+BEGIN
+BEGIN TRY
+IF ( NOT EXISTS(SELECT ModelID FROM Model WHERE ModelID = @Mid)) AND (NOT EXISTS(SELECT ModelName FROM Model WHERE ModelName = @Mname))
+	AND ( @Mowner IS NOT NULL) AND ( @Mdate IS NOT NULL)
+    BEGIN 
+          INSERT INTO Model VALUES(@Mid,@Mname,@Mowner,@Mdate)
+		  RETURN 1		  
+    END 
+ELSE IF ( EXISTS(SELECT @Mid FROM Model WHERE ModelID = @Mid))
+    BEGIN
+		return -1
+	END
+ELSE IF (EXISTS(SELECT @Mname FROM Model WHERE ModelName = @Mname))
+	BEGIN
+        RETURN -2 
+	END
+ELSE IF ( @Mdate IS NULL ) OR ( @Mowner IS NULL) 
+    BEGIN 
+        return -3 
+    END 
+END TRY
+BEGIN CATCH
+RETURN -99
+END CATCH
+END
+
+
+
+
+ALTER PROCEDURE [dbo].[uspInsertParticipants]
+@ParticipantID INT, @ParticipantName VARCHAR(50), @ParticipantEmailID VARCHAR(50)
+AS
+BEGIN
+BEGIN TRY
+IF ( NOT EXISTS(SELECT ParticipantID FROM Participants WHERE ParticipantID = @ParticipantID) AND (NOT EXISTS(SELECT ParticipantEmailID FROM Participants WHERE ParticipantEmailID = @ParticipantEmailID))
+	AND ( @ParticipantName IS NOT NULL) )
+    BEGIN 
+          INSERT INTO Participants VALUES(@ParticipantID,@ParticipantName,@ParticipantEmailID)
+		  RETURN 1
+		  
+    END 
+ELSE IF ( EXISTS(SELECT @ParticipantID FROM Participants WHERE ParticipantID = @ParticipantID))
+    BEGIN
+		return -1
+	END
+ELSE IF (EXISTS(SELECT @ParticipantEmailID FROM Participants WHERE ParticipantEmailID = @ParticipantEmailID))
+	BEGIN
+        RETURN -2 
+	END
+ELSE IF ( @ParticipantName IS NULL ) 
+    BEGIN 
+        return -3 
+    END 
+END TRY
+BEGIN CATCH
+RETURN -99
+END CATCH

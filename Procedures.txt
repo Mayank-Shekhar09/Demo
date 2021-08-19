@@ -1,0 +1,144 @@
+Procedure for Insertion in Courses
+
+ALTER PROCEDURE uspInsertCourses
+@CourseID varchar(20),
+@CourseTitle varchar(100),
+@Duration decimal,
+@CourseOwner int,
+@AssessmentMode varchar(100)
+AS
+BEGIN
+INSERT INTO Courses VALUES(@CourseID, @CourseTitle, @Duration, @CourseOwner, @AssessmentMode)
+END
+GO
+EXEC uspInsertCourses 'ILSWTTI100','Course1',10.8,99004919,'HandsOn'
+*******************************************************************************
+
+Insertion for Batch
+
+ALTER PROCEDURE uspInsertBatch
+@BatchName varchar(30),
+@Batch date,
+@NoOfStudent int,
+@SessionQuarter varchar(2)
+AS
+BEGIN
+INSERT INTO Batch VALUES(@BatchName, @Batch, @NoOfStudent, @SessionQuarter)
+END
+GO
+
+EXEC uspInsertBatch 'JUN2021 DPS C#', '2021-03-21', 50, Q1
+
+***********************************************************************************
+
+CREATE PROCEDURE uspInsertParticipant
+@ParticipantId int,
+@ParticipantName varchar(50),
+@ParticipantEmail varchar(50)
+AS
+BEGIN
+INSERT INTO Participant VALUES(@ParticipantId, @ParticipantName, @ParticipantEmail)
+END
+GO
+
+EXEC uspInsertParticipant 88004818,'Group5','Group5@gmail.com'
+
+Select * from Participant
+
+************************************************************************************
+
+ALTER PROCEDURE uspInsertGrader
+@FacultyId int,
+@ParticipantId int
+AS
+BEGIN
+INSERT INTO Grader VALUES(@FacultyId, @ParticipantId)
+END
+GO
+
+EXEC uspInsertGrader 99004919,88004818
+
+Select * from Grader
+
+*************************************************************************************
+
+ALTER PROCEDURE uspInsertionCourseFaculty
+@CourseId varchar(20),
+@FacultyId int,
+@Priority int
+AS
+BEGIN
+INSERT INTO CourseFacultyMapping VALUES(@CourseId, @FacultyId, @Priority)
+END
+GO
+
+EXEC uspInsertionCourseFaculty 'ILSWTTI100',99004919,1
+
+SELECT * FROM CourseFacultyMapping
+
+*************************************************************************************
+
+ALTER PROCEDURE uspInsertAssessment
+@AssessmentType varchar(20)
+AS
+BEGIN
+BEGIN TRY
+INSERT INTO AssessmentMode VALUES(@AssessmentType)
+END TRY
+BEGIN CATCH
+SELECT 
+ERROR_MESSAGE() AS ErrorMessage; 
+END CATCH
+END
+GO
+EXEC uspInsertAssessment 'NoAssessment'
+
+Select * from AssessmentMode
+
+****************************************************************************************
+
+CREATE OR ALTER PROCEDURE [dbo].[uspInsertCourses]
+@CourseID varchar(20),
+@CourseTitle varchar(100),
+@Duration decimal,
+@CourseOwner int
+AS
+BEGIN 
+BEGIN TRY
+IF EXISTS
+    (  
+          SELECT CourseID FROM Courses  
+          WHERE CourseID = @CourseId  
+        )  
+     BEGIN  
+        Print 'CourseID Already Exist'
+     END  
+ELSE  
+      BEGIN  
+           INSERT INTO Courses
+               (  
+                   CourseID, 
+				   CourseTitle, 
+				   NoOfHours, 
+				   CourseOwner_ID  
+               )  
+           VALUES  
+           (  
+                 @CourseID, 
+				 @CourseTitle, 
+				 @Duration, 
+				 @CourseOwner 
+           )  
+           return 99; 
+     END  
+
+END TRY  
+BEGIN CATCH 
+SELECT 
+ERROR_MESSAGE() AS ErrorMessage; 
+END CATCH
+END
+GO
+EXEC uspInsertCourses 'ILSWTTI103','demo3',200,99004919
+
+SELECT * FROM Courses

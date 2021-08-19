@@ -1,0 +1,85 @@
+Faculty : PROCEDURE INSERTION
+
+1.PSNo (PK)
+2.Email Id
+3.Name 
+
+
+**************************************
+
+Courses : PROCEDURE INSERTION
+
+1.CourseId(PK)
+2.CourseTitle
+3.No of hours
+4.Course Owner (PSNo--->FK)
+5.Assessment Model
+
+
+**************************************
+
+Course Faculties Mapping : 
+
+1.CourseId (FK)
+2.FacultyId (PSNo-->FK)
+
+
+**************************************
+
+Batch : PROCEDURE INSERTION
+
+1. BatchId (PK, IDENTITY)
+2. BatchName(UNIQUE)
+3. Batch Start Date
+4. No Of Students
+5. Session-Quarter (Q1,Q2,Q3,Q4)
+
+**************************************
+
+Model : PROCEDURE INSERTION
+
+1. ModelId(PK, Identity)
+2. Model Name
+
+**************************************
+
+Grader : PROCEDURE INSERTION
+
+1. Faculty (PSNo--->FK)
+2. ParticipantId (FK)
+
+**************************************
+Model Course Mapping : 
+
+1. ModelID(FK)
+2. CourseId(FK) 
+
+*************************************
+
+Batch Model Course Mapping : 
+1. BatchId
+2. FacultyId
+3. CourseId
+
+*************************************
+
+Participants Table : PROCEDURE INSERTION
+
+1. ParticipantsId(PK)
+2. ParticipantsName
+3. EmailId
+
+*************************************
+
+Participants Batch Mapping :
+
+1.BatchId(FK)
+2.ParticipantsId(FK)
+
+
+*************************************
+
+Batch-Model Mapping :
+
+1.BatchId(FK)
+2.ModelId(FK)
